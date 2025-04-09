@@ -1,46 +1,14 @@
 using UnityEngine;
-using UnityEngine.XR.Interaction.Toolkit;
-using UnityEngine.XR.Interaction.Toolkit.Interactables;
 
 public class Item : MonoBehaviour
 {
-    public bool isHeld = false;  
-
-    private XRGrabInteractable grabInteractable; 
-
-    private void Start()
+    // This script is just to ensure the item is tagged correctly
+    private void OnValidate()
     {
-        grabInteractable = GetComponent<XRGrabInteractable>();
-
-        grabInteractable.selectEntered.AddListener(OnSelectEntered);
-        grabInteractable.selectExited.AddListener(OnSelectExited);
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("ItemZone") && isHeld)
+        if (!CompareTag("Item"))
         {
-    
-            GameManager gameManager = FindObjectOfType<GameManager>();
-            if (gameManager != null)
-            {
-                gameManager.OnItemCollected();
-            }
-
-          
-            gameObject.SetActive(false);  
+            gameObject.tag = "Item"; // Ensure the item has the correct tag
         }
     }
-
-    // This method is called when the item is selected (picked up) by the VR controller
-    private void OnSelectEntered(SelectEnterEventArgs args)
-    {
-        isHeld = true;
-    }
-
-    // This method is called when the item is deselected (dropped) by the VR controller
-    private void OnSelectExited(SelectExitEventArgs args)
-    {
-        isHeld = false;
-    }
 }
+
