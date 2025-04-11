@@ -6,8 +6,11 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/SampleScene.unity
-    guid: 55daccc09a3b69647bbab145b54a3ab3
+    path: Assets/Scenes/StartMenuScene.unity
+    guid: ce514be54625087469497e1d8b707e5a
+  - enabled: 1
+    path: Assets/Scenes/MicroscapeScene.unity
+    guid: 53eada5bca3a9c1458cf6575e38831a9
   m_configObjects:
     Unity.XR.Oculus.Settings: {fileID: 11400000, guid: bfa1182bd221b4ca89619141f66f1260, type: 2}
     Unity.XR.WindowsMR.Settings: {fileID: 11400000, guid: dc5a169419fa04987b057f65238cf3ba, type: 2}
