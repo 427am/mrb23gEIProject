@@ -3,19 +3,31 @@ using UnityEngine.SceneManagement;
 
 public class MenuActions : MonoBehaviour
 {
-    // Call this from the Start Game button
-    public void StartGame()
+    [SerializeField]
+    private string sceneToLoad = "MicroscapeScene"; 
+
+    
+    public void LoadScene()
     {
-        SceneManager.LoadScene("MicroscapeScene", LoadSceneMode.Single);
+        if (!string.IsNullOrEmpty(sceneToLoad))
+        {
+            SceneManager.LoadScene(sceneToLoad, LoadSceneMode.Single);
+        }
+        else
+        {
+            Debug.LogWarning("Scene name is not set!");
+        }
     }
 
-    // Call this from the Exit button
+    
     public void ExitGame()
     {
         #if UNITY_EDITOR
-                UnityEditor.EditorApplication.isPlaying = false; // For testing in editor
+                UnityEditor.EditorApplication.isPlaying = false; 
         #else
                     Application.Quit(); // Quits the built application
         #endif
     }
+
+    
 }

@@ -1,74 +1,78 @@
 using UnityEngine;
-using TMPro; // For TextMeshPro
+using TMPro;
+using System.Collections;
 
 public class ItemZone : MonoBehaviour
 {
     public int itemCount = 0;
-    public TextMeshProUGUI itemCountText; // TextMeshPro for displaying the item count
-    public GameObject winPopup; // UI Panel for the win popup
-    public TextMeshProUGUI messageText; // TextMeshPro for displaying a message when the player enters the zone
+    public TextMeshProUGUI itemCountText;
+    public GameObject winPopup;
+    public TextMeshProUGUI messageText;
 
     private void Start()
     {
-        // Initially hide the win popup and message
         winPopup.SetActive(false);
         messageText.gameObject.SetActive(false);
     }
 
-    // Trigger when an item enters the zone
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Item")) // Make sure the object is tagged as "Item"
+        if (other.CompareTag("Item"))
         {
-            // Increase item count
             itemCount++;
             UpdateItemCountUI();
+            Destroy(other.gameObject);
 
-            // Optionally, destroy the item or disable it
-            Destroy(other.gameObject); // or other.gameObject.SetActive(false);
-
-            // Check if item count is 5 to show win popup
             if (itemCount >= 5)
             {
                 ShowWinPopup();
+                StartCoroutine(ExitGameAfterDelay(15f)); 
             }
         }
-        else if (other.CompareTag("Player")) // Check when the player enters the zone
+        else if (other.CompareTag("Player"))
         {
-            Debug.Log("Player entered the Item Zone!"); // Debug log for checking player entry
+            Debug.Log("Player entered the Item Zone!");
             ShowMessage("DROP ITEMS HERE");
         }
     }
 
-    // Trigger when an item leaves the zone (optional)
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // Hide the message when the player leaves the zone
-            Debug.Log("Player left the Item Zone!"); // Debug log for checking player exit
+            Debug.Log("Player left the Item Zone!");
             messageText.gameObject.SetActive(false);
         }
     }
 
-    // Update the item count UI using TextMeshPro
     private void UpdateItemCountUI()
     {
         itemCountText.text = itemCount + "/5";
     }
 
-    // Show the win popup
     private void ShowWinPopup()
     {
         winPopup.SetActive(true);
-        messageText.gameObject.SetActive(false); // Hide the message when the game ends
+        messageText.gameObject.SetActive(false);
     }
 
-    // Show the message when the player enters the zone
     private void ShowMessage(string message)
     {
-        Debug.Log("Displaying message: " + message); // Debug log for showing the message
+        Debug.Log("Displaying message: " + message);
         messageText.text = message;
         messageText.gameObject.SetActive(true);
+    }
+
+    
+    private IEnumerator ExitGameAfterDelay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        Debug.Log("Exiting game...");
+        Application.Quit();
+
+        
+        #if UNITY_EDITOR
+                UnityEditor.EditorApplication.isPlaying = false;
+        #endif
     }
 }
